@@ -17,9 +17,15 @@ kube-system   kube-proxy-wl2fx                    1/1     Running   0          8
 kube-system   kube-proxy-z6ljd                    1/1     Running   0          30m
 kube-system   metrics-server-5764499cfd-n8s8v     1/1     Running   0          28m
 kube-system   metrics-server-5764499cfd-wgrsw     1/1     Running   0          28m
+
+**************************************************************************************************************
+
 ubuntu@ip-172-31-21-99:~$ kubectl get deploy nginx-deployment
 NAME               READY   UP-TO-DATE   AVAILABLE   AGE
 nginx-deployment   2/2     2            2           23m
+
+***************************************************************************************************************
+
 ubuntu@ip-172-31-21-99:~$ kubectl describe deploy nginx-deployment
 Name:                   nginx-deployment
 Namespace:              default
@@ -54,9 +60,14 @@ Events:
   Type    Reason             Age   From                   Message
   ----    ------             ----  ----                   -------
   Normal  ScalingReplicaSet  23m   deployment-controller  Scaled up replica set nginx-deployment-7c79c4bf97 to 2
+
+**********************************************************************************************************************************
 ubuntu@ip-172-31-21-99:~$ kubectl get svc nginx-service
 NAME            TYPE           CLUSTER-IP     EXTERNAL-IP                                                               PORT(S)        AGE
 nginx-service   LoadBalancer   10.100.81.99   a484f9126dd9541d7889a28322b727d1-1079152608.us-west-2.elb.amazonaws.com   80:30398/TCP   24m
+
+************************************************************************************************************************************
+
 ubuntu@ip-172-31-21-99:~$ kubectl get endpoints nginx-service
 NAME            ENDPOINTS                            AGE
 nginx-service   192.168.58.126:80,192.168.63.15:80   24m
@@ -68,6 +79,8 @@ Content-Type: text/html
 Content-Length: 615
 Last-Modified: Tue, 28 Oct 2025 12:05:10 GMT
 Connection: keep-alive
+
+*******************************************************************************************************************************************
 ETag: "6900b176-267"
 Accept-Ranges: bytes
 
