@@ -1,0 +1,74 @@
+ubuntu@ip-172-31-21-99:~$ kubectl get nodes
+NAME                                           STATUS   ROLES    AGE     VERSION
+ip-192-168-11-169.us-west-2.compute.internal   Ready    <none>   30m     v1.29.15-eks-ecaa3a6
+ip-192-168-61-182.us-west-2.compute.internal   Ready    <none>   8m39s   v1.29.15-eks-ecaa3a6
+ip-192-168-77-173.us-west-2.compute.internal   Ready    <none>   30m     v1.29.15-eks-ecaa3a6
+ubuntu@ip-172-31-21-99:~$ kubectl get pods -A
+NAMESPACE     NAME                                READY   STATUS    RESTARTS   AGE
+default       nginx-deployment-7c79c4bf97-hbk29   1/1     Running   0          23m
+default       nginx-deployment-7c79c4bf97-t8jk8   1/1     Running   0          23m
+kube-system   aws-node-f4z44                      2/2     Running   0          30m
+kube-system   aws-node-hrp8x                      2/2     Running   0          30m
+kube-system   aws-node-lch4r                      2/2     Running   0          8m43s
+kube-system   coredns-5b8cc885bc-6plkz            1/1     Running   0          33m
+kube-system   coredns-5b8cc885bc-s7l8s            1/1     Running   0          33m
+kube-system   kube-proxy-5nr7k                    1/1     Running   0          30m
+kube-system   kube-proxy-wl2fx                    1/1     Running   0          8m43s
+kube-system   kube-proxy-z6ljd                    1/1     Running   0          30m
+kube-system   metrics-server-5764499cfd-n8s8v     1/1     Running   0          28m
+kube-system   metrics-server-5764499cfd-wgrsw     1/1     Running   0          28m
+ubuntu@ip-172-31-21-99:~$ kubectl get deploy nginx-deployment
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   2/2     2            2           23m
+ubuntu@ip-172-31-21-99:~$ kubectl describe deploy nginx-deployment
+Name:                   nginx-deployment
+Namespace:              default
+CreationTimestamp:      Fri, 28 Nov 2025 13:16:59 +0000
+Labels:                 <none>
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=nginx
+Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=nginx
+  Containers:
+   nginx:
+    Image:         nginx:latest
+    Port:          80/TCP
+    Host Port:     0/TCP
+    Environment:   <none>
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   nginx-deployment-7c79c4bf97 (2/2 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  23m   deployment-controller  Scaled up replica set nginx-deployment-7c79c4bf97 to 2
+ubuntu@ip-172-31-21-99:~$ kubectl get svc nginx-service
+NAME            TYPE           CLUSTER-IP     EXTERNAL-IP                                                               PORT(S)        AGE
+nginx-service   LoadBalancer   10.100.81.99   a484f9126dd9541d7889a28322b727d1-1079152608.us-west-2.elb.amazonaws.com   80:30398/TCP   24m
+ubuntu@ip-172-31-21-99:~$ kubectl get endpoints nginx-service
+NAME            ENDPOINTS                            AGE
+nginx-service   192.168.58.126:80,192.168.63.15:80   24m
+ubuntu@ip-172-31-21-99:~$ curl -I http://a484f9126dd9541d7889a28322b727d1-1079152608.us-west-2.elb.amazonaws.com
+HTTP/1.1 200 OK
+Server: nginx/1.29.3
+Date: Fri, 28 Nov 2025 13:41:40 GMT
+Content-Type: text/html
+Content-Length: 615
+Last-Modified: Tue, 28 Oct 2025 12:05:10 GMT
+Connection: keep-alive
+ETag: "6900b176-267"
+Accept-Ranges: bytes
+
+ubuntu@ip-172-31-21-99:~$ 
